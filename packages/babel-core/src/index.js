@@ -38,7 +38,7 @@ export function transformFile(filename: string, opts?: Object, callback: Functio
 
   opts.filename = filename;
 
-  fs.readFile(filename, function (err, code) {
+  fs.readFile(filename, function(err, code) {
     let result;
 
     if (!err) {

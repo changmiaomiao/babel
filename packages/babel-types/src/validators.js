@@ -202,7 +202,7 @@ export function isVar(node: Object): boolean {
 
 export function isSpecifierDefault(specifier: Object): boolean {
   return t.isImportDefaultSpecifier(specifier) ||
-         t.isIdentifier(specifier.imported || specifier.exported, { name: "default" });
+    t.isIdentifier(specifier.imported || specifier.exported, { name: "default" });
 }
 
 /**

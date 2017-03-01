@@ -14,21 +14,21 @@ const ZERO_DECIMAL_INTEGER = /\.0+$/;
 const NON_DECIMAL_LITERAL = /^0[box]/;
 
 export type Format = {
-  shouldPrintComment: (comment: string) => boolean;
-  retainLines: boolean;
-  retainFunctionParens: boolean;
-  comments: boolean;
-  auxiliaryCommentBefore: string;
-  auxiliaryCommentAfter: string;
-  compact: boolean | "auto";
-  minified: boolean;
-  quotes: "single" | "double";
-  concise: boolean;
+  shouldPrintComment: (comment: string) => boolean,
+  retainLines: boolean,
+  retainFunctionParens: boolean,
+  comments: boolean,
+  auxiliaryCommentBefore: string,
+  auxiliaryCommentAfter: string,
+  compact: boolean | "auto",
+  minified: boolean,
+  quotes: "single" | "double",
+  concise: boolean,
   indent: {
-    adjustMultilineComment: boolean;
-    style: string;
-    base: number;
-  }
+    adjustMultilineComment: boolean,
+    style: string,
+    base: number,
+  },
 };
 
 export default class Printer {
@@ -134,8 +134,7 @@ export default class Printer {
 
     // Integer tokens need special handling because they cannot have '.'s inserted
     // immediately after them.
-    this._endsWithInteger =
-      isInteger(+str) &&
+    this._endsWithInteger = isInteger(+str) &&
       !NON_DECIMAL_LITERAL.test(str) &&
       !SCIENTIFIC_NOTATION.test(str) &&
       !ZERO_DECIMAL_INTEGER.test(str) &&
@@ -149,14 +148,14 @@ export default class Printer {
   token(str: string): void {
     // space is mandatory to avoid outputting <!--
     // http://javascript.spec.whatwg.org/#comment-syntax
-    if ((str === "--" && this.endsWith("!")) ||
-
+    if (
+      (str === "--" && this.endsWith("!")) ||
       // Need spaces for operators of the same kind to avoid: `a+++b`
       (str[0] === "+" && this.endsWith("+")) ||
       (str[0] === "-" && this.endsWith("-")) ||
-
       // Needs spaces to avoid changing '34' to '34.', which would still be a valid number.
-      (str[0] === "." && this._endsWithInteger)) {
+      (str[0] === "." && this._endsWithInteger)
+    ) {
       this._space();
     }
 
@@ -243,7 +242,8 @@ export default class Printer {
     this._parenPushNewlineState = null;
 
     let i;
-    for (i = 0; i < str.length && str[i] === " "; i++) continue;
+    for (i = 0; i < str.length && str[i] === " "; i++)
+      continue;
     if (i === str.length) return;
 
     const cha = str[i];
@@ -295,7 +295,7 @@ export default class Printer {
 
   startTerminatorless(): Object {
     return this._parenPushNewlineState = {
-      printed: false
+      printed: false,
     };
   }
 
@@ -322,7 +322,9 @@ export default class Printer {
     const printMethod = this[node.type];
     if (!printMethod) {
       // eslint-disable-next-line max-len
-      throw new ReferenceError(`unknown node of type ${JSON.stringify(node.type)} with constructor ${JSON.stringify(node && node.constructor.name)}`);
+      throw new ReferenceError(
+        `unknown node of type ${JSON.stringify(node.type)} with constructor ${JSON.stringify(node && node.constructor.name)}`
+      );
     }
 
     this._printStack.push(node);
@@ -332,16 +334,19 @@ export default class Printer {
     this._maybeAddAuxComment(this._insideAux && !oldInAux);
 
     let needsParens = n.needsParens(node, parent, this._printStack);
-    if (this.format.retainFunctionParens &&
-        node.type === "FunctionExpression" &&
-        node.extra && node.extra.parenthesized) {
+    if (
+      this.format.retainFunctionParens &&
+      node.type === "FunctionExpression" &&
+      node.extra &&
+      node.extra.parenthesized
+    ) {
       needsParens = true;
     }
     if (needsParens) this.token("(");
 
     this._printLeadingComments(node, parent);
 
-    const loc = (t.isProgram(node) || t.isFile(node)) ? null : node.loc;
+    const loc = t.isProgram(node) || t.isFile(node) ? null : node.loc;
     this.withSource("start", loc, () => {
       this[node.type](node, parent);
     });
@@ -370,7 +375,7 @@ export default class Printer {
     if (comment) {
       this._printComment({
         type: "CommentBlock",
-        value: comment
+        value: comment,
       });
     }
   }
@@ -383,7 +388,7 @@ export default class Printer {
     if (comment) {
       this._printComment({
         type: "CommentBlock",
-        value: comment
+        value: comment,
       });
     }
   }
@@ -488,14 +493,17 @@ export default class Printer {
       // user node
       if (leading) {
         const comments = node.leadingComments;
-        const comment = comments && find(comments, (comment) =>
-          !!comment.loc && this.format.shouldPrintComment(comment.value));
+        const comment = comments &&
+          find(comments, comment => !!comment.loc && this.format.shouldPrintComment(comment.value));
 
         lines = this._whitespace.getNewlinesBefore(comment || node);
       } else {
         const comments = node.trailingComments;
-        const comment = comments && findLast(comments, (comment) =>
-          !!comment.loc && this.format.shouldPrintComment(comment.value));
+        const comment = comments &&
+          findLast(
+            comments,
+            comment => !!comment.loc && this.format.shouldPrintComment(comment.value)
+          );
 
         lines = this._whitespace.getNewlinesAfter(comment || node);
       }
@@ -560,9 +568,11 @@ export default class Printer {
     });
 
     // whitespace after
-    this.newline((this._whitespace ? this._whitespace.getNewlinesAfter(comment) : 0) +
-      // Subtract one to account for the line force-added above.
-      (comment.type === "CommentLine" ? -1 : 0));
+    this.newline(
+      (this._whitespace ? this._whitespace.getNewlinesAfter(comment) : 0) +
+        // Subtract one to account for the line force-added above.
+        (comment.type === "CommentLine" ? -1 : 0)
+    );
   }
 
   _printComments(comments?: Array<Object>) {

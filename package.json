@@ -38,6 +38,7 @@
     "lerna-changelog": "^0.2.0",
     "lodash": "^4.2.0",
     "mocha": "^3.0.0",
+    "prettier": "0.20.0",
     "nyc": "^10.0.0",
     "output-file-sync": "^1.1.1",
     "rimraf": "^2.4.3",

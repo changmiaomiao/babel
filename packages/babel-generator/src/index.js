@@ -63,8 +63,8 @@ function normalizeOptions(code, opts, tokens): Format {
     indent: {
       adjustMultilineComment: true,
       style: style,
-      base: 0
-    }
+      base: 0,
+    },
   };
 
   if (format.minified) {
@@ -72,8 +72,9 @@ function normalizeOptions(code, opts, tokens): Format {
 
     format.shouldPrintComment = format.shouldPrintComment || (() => format.comments);
   } else {
-    format.shouldPrintComment = format.shouldPrintComment || ((value) => format.comments ||
-      (value.indexOf("@license") >= 0 || value.indexOf("@preserve") >= 0));
+    format.shouldPrintComment = format.shouldPrintComment ||
+      (value =>
+        format.comments || (value.indexOf("@license") >= 0 || value.indexOf("@preserve") >= 0));
   }
 
   if (format.compact === "auto") {
@@ -102,7 +103,7 @@ function findCommonStringDelimiter(code, tokens) {
 
   const occurences = {
     single: 0,
-    double: 0
+    double: 0,
   };
 
   let checked = 0;
@@ -143,7 +144,7 @@ export class CodeGenerator {
   }
 }
 
-export default function (ast: Object, opts: Object, code: string): Object {
+export default function(ast: Object, opts: Object, code: string): Object {
   const gen = new Generator(ast, opts, code);
   return gen.generate();
 }

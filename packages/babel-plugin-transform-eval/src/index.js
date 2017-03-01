@@ -1,4 +1,4 @@
-export default function ({ parse, traverse }) {
+export default function({ parse, traverse }) {
   return {
     visitor: {
       CallExpression(path) {
@@ -13,7 +13,7 @@ export default function ({ parse, traverse }) {
           traverse.removeProperties(ast);
           return ast.program;
         }
-      }
-    }
+      },
+    },
   };
 }

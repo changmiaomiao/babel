@@ -1,4 +1,4 @@
-export default function ({ types: t }) {
+export default function({ types: t }) {
   return {
     visitor: {
       MemberExpression: {
@@ -9,8 +9,8 @@ export default function ({ types: t }) {
             node.property = t.stringLiteral(prop.name);
             node.computed = true;
           }
-        }
-      }
-    }
+        },
+      },
+    },
   };
 }

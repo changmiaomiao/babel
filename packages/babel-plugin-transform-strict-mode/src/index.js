@@ -1,6 +1,6 @@
 import * as t from "babel-types";
 
-export default function () {
+export default function() {
   return {
     visitor: {
       Program(path, state) {
@@ -13,7 +13,7 @@ export default function () {
         }
 
         path.unshiftContainer("directives", t.directive(t.directiveLiteral("use strict")));
-      }
-    }
+      },
+    },
   };
 }

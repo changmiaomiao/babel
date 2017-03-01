@@ -2,7 +2,7 @@ import LooseTransformer from "./loose";
 import VanillaTransformer from "./vanilla";
 import nameFunction from "babel-helper-function-name";
 
-export default function ({ types: t }) {
+export default function({ types: t }) {
   // todo: investigate traversal requeueing
   const VISITED = Symbol();
 
@@ -25,9 +25,9 @@ export default function ({ types: t }) {
 
         const ref = node.id || path.scope.generateUidIdentifier("class");
 
-        path.replaceWith(t.variableDeclaration("let", [
-          t.variableDeclarator(ref, t.toExpression(node))
-        ]));
+        path.replaceWith(
+          t.variableDeclaration("let", [t.variableDeclarator(ref, t.toExpression(node))])
+        );
       },
 
       ClassExpression(path, state) {
@@ -43,7 +43,7 @@ export default function ({ types: t }) {
         if (state.opts.loose) Constructor = LooseTransformer;
 
         path.replaceWith(new Constructor(path, state.file).run());
-      }
-    }
+      },
+    },
   };
 }

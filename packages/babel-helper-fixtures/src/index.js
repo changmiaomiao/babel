@@ -12,25 +12,25 @@ function humanize(val, noext) {
 }
 
 type TestFile = {
-  loc: string;
-  code: string;
-  filename: string;
+  loc: string,
+  code: string,
+  filename: string,
 };
 
 type Test = {
-  title: string;
-  disabled: boolean;
-  options: Object;
-  exec: TestFile;
-  actual: TestFile;
-  expected: TestFile;
+  title: string,
+  disabled: boolean,
+  options: Object,
+  exec: TestFile,
+  actual: TestFile,
+  expected: TestFile,
 };
 
 type Suite = {
-  options: Object;
-  tests: Array<Test>;
-  title: string;
-  filename: string;
+  options: Object,
+  tests: Array<Test>,
+  title: string,
+  filename: string,
 };
 
 function assertDirectory(loc) {
@@ -64,7 +64,7 @@ export default function get(entryLoc): Array<Suite> {
       options: clone(rootOpts),
       tests: [],
       title: humanize(suiteName),
-      filename: entryLoc + "/" + suiteName
+      filename: entryLoc + "/" + suiteName,
     };
 
     assertDirectory(suite.filename);
@@ -80,11 +80,11 @@ export default function get(entryLoc): Array<Suite> {
     function push(taskName, taskDir) {
       const actualLocAlias = suiteName + "/" + taskName + "/actual.js";
       let expectLocAlias = suiteName + "/" + taskName + "/expected.js";
-      const execLocAlias   = suiteName + "/" + taskName + "/exec.js";
+      const execLocAlias = suiteName + "/" + taskName + "/exec.js";
 
       const actualLoc = taskDir + "/actual.js";
       let expectLoc = taskDir + "/expected.js";
-      let execLoc   = taskDir + "/exec.js";
+      let execLoc = taskDir + "/exec.js";
 
       if (fs.statSync(taskDir).isFile()) {
         const ext = path.extname(taskDir);
@@ -121,8 +121,8 @@ export default function get(entryLoc): Array<Suite> {
         expect: {
           loc: expectLoc,
           code: readFile(expectLoc),
-          filename: expectLocAlias
-        }
+          filename: expectLocAlias,
+        },
       };
 
       // traceur checks

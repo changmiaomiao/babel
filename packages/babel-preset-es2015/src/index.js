@@ -2,7 +2,8 @@ import transformES2015TemplateLiterals from "babel-plugin-transform-es2015-templ
 import transformES2015Literals from "babel-plugin-transform-es2015-literals";
 import transformES2015FunctionName from "babel-plugin-transform-es2015-function-name";
 import transformES2015ArrowFunctions from "babel-plugin-transform-es2015-arrow-functions";
-import transformES2015BlockScopedFunctions from "babel-plugin-transform-es2015-block-scoped-functions";
+import transformES2015BlockScopedFunctions
+  from "babel-plugin-transform-es2015-block-scoped-functions";
 import transformES2015Classes from "babel-plugin-transform-es2015-classes";
 import transformES2015ObjectSuper from "babel-plugin-transform-es2015-object-super";
 import transformES2015ShorthandProperties from "babel-plugin-transform-es2015-shorthand-properties";
@@ -23,7 +24,7 @@ import transformES2015ModulesAMD from "babel-plugin-transform-es2015-modules-amd
 import transformES2015ModulesUMD from "babel-plugin-transform-es2015-modules-umd";
 import transformRegenerator from "babel-plugin-transform-regenerator";
 
-export default function (context, opts = {}) {
+export default function(context, opts = {}) {
   const moduleTypes = ["commonjs", "amd", "umd", "systemjs"];
   let loose = false;
   let modules = "commonjs";
@@ -35,11 +36,14 @@ export default function (context, opts = {}) {
     if (opts.spec !== undefined) spec = opts.spec;
   }
 
-  if (typeof loose !== "boolean") throw new Error("Preset es2015 'loose' option must be a boolean.");
+  if (typeof loose !== "boolean")
+    throw new Error("Preset es2015 'loose' option must be a boolean.");
   if (typeof spec !== "boolean") throw new Error("Preset es2015 'spec' option must be a boolean.");
   if (modules !== false && moduleTypes.indexOf(modules) === -1) {
-    throw new Error("Preset es2015 'modules' option must be 'false' to indicate no modules\n" +
-      "or a module type which be be one of: 'commonjs' (default), 'amd', 'umd', 'systemjs'");
+    throw new Error(
+      "Preset es2015 'modules' option must be 'false' to indicate no modules\n" +
+        "or a module type which be be one of: 'commonjs' (default), 'amd', 'umd', 'systemjs'"
+    );
   }
 
   // be DRY
@@ -70,7 +74,7 @@ export default function (context, opts = {}) {
       modules === "systemjs" && [transformES2015ModulesSystemJS, optsLoose],
       modules === "amd" && [transformES2015ModulesAMD, optsLoose],
       modules === "umd" && [transformES2015ModulesUMD, optsLoose],
-      [transformRegenerator, { async: false, asyncGenerators: false }]
-    ].filter(Boolean) // filter out falsy values
+      [transformRegenerator, { async: false, asyncGenerators: false }],
+    ].filter(Boolean), // filter out falsy values
   };
 }
